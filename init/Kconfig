@@ -939,6 +939,10 @@ source "usr/Kconfig"
 
 endif
 
+choice
+  prompt "Optimization level"
+  default CC_OPTIMIZE_DEFAULT
+
 config CC_OPTIMIZE_FOR_SIZE
 	bool "Optimize for size"
 	help
@@ -946,6 +950,11 @@ config CC_OPTIMIZE_FOR_SIZE
 	  resulting in a smaller kernel.
 
 	  If unsure, say Y.
+
+config CC_OPTIMIZE_ALOT
+  	bool "Use -O3"
+
+endchoice
 
 config SYSCTL
 	bool
