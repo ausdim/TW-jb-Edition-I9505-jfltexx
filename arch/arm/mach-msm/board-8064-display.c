@@ -28,8 +28,17 @@
 #include "devices.h"
 #include "board-8064.h"
 
+//KT Specifics
+static bool ktoonservative_is_activef = false;
 extern void set_screen_on_off_mhz(bool onoff);
 extern void set_screen_on_off_flag(bool onoff);
+extern void screen_is_on_relay_kt(bool state);
+
+void ktoonservative_is_activebd(bool val)
+{
+	ktoonservative_is_activef = val;
+}
+
 #ifdef CONFIG_FB_MSM_TRIPLE_BUFFER
 #if defined(CONFIG_FB_MSM_MIPI_SAMSUNG_OLED_VIDEO_HD_PT_PANEL)
 /* prim = 1280 x 736 x 3(bpp) x 3(pages) */
@@ -918,6 +927,8 @@ static int mipi_panel_power_oled(int enable)
 #endif
 		set_screen_on_off_mhz(true);
 		set_screen_on_off_flag(true);
+		if (ktoonservative_is_activef)
+			screen_is_on_relay_kt(true);
 	} else {
 
 		pr_info("[lcd] PANEL OFF\n");
@@ -950,6 +961,9 @@ static int mipi_panel_power_oled(int enable)
 		}
 		set_screen_on_off_mhz(false);
 		set_screen_on_off_flag(false);
+		if (ktoonservative_is_activef)
+			screen_is_on_relay_kt(false);
+		pr_alert("KT_RELAY_CALL  FROM SCREEN\n");
 	}
 
 	return rc;
