@@ -132,6 +132,8 @@
 #define CHARGER_DISCONNECTED	0xDF
 #define CONFIGURED (1 << 7)
 
+extern void boostpulse_relay_kt(void);
+extern void hotplugap_boostpulse(void);
 static int synaptics_rmi4_i2c_read(struct synaptics_rmi4_data *rmi4_data,
 		unsigned short addr, unsigned char *data,
 		unsigned short length);

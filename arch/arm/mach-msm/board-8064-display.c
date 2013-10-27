@@ -28,6 +28,8 @@
 #include "devices.h"
 #include "board-8064.h"
 
+extern void set_screen_on_off_mhz(bool onoff);
+extern void set_screen_on_off_flag(bool onoff);
 #ifdef CONFIG_FB_MSM_TRIPLE_BUFFER
 #if defined(CONFIG_FB_MSM_MIPI_SAMSUNG_OLED_VIDEO_HD_PT_PANEL)
 /* prim = 1280 x 736 x 3(bpp) x 3(pages) */
@@ -914,6 +916,8 @@ static int mipi_panel_power_oled(int enable)
 			return -ENODEV;
 		}
 #endif
+		set_screen_on_off_mhz(true);
+		set_screen_on_off_flag(true);
 	} else {
 
 		pr_info("[lcd] PANEL OFF\n");
@@ -944,6 +948,8 @@ static int mipi_panel_power_oled(int enable)
 			pr_err("disable reg_L30 failed, rc=%d\n", rc);
 			return -ENODEV;
 		}
+		set_screen_on_off_mhz(false);
+		set_screen_on_off_flag(false);
 	}
 
 	return rc;

@@ -41,6 +41,7 @@
 
 static DEFINE_SPINLOCK(elv_list_lock);
 static LIST_HEAD(elv_list);
+static struct request_queue *globalq[50];
 
 /*
  * Merge hash stuff.
@@ -992,6 +993,18 @@ fail_register:
 	elv_quiesce_end(q);
 
 	return err;
+}
+
+int elevator_change_relay(const char *name, int screen_status)
+{
+	/*int i = 0;
+	for (i = 0; i < queue_size; i++)
+	{
+		if (i != 1 && i != 2)
+			elevator_change(globalq[i], name);
+	}*/
+	elevator_change(globalq[0], name);
+	return 0;
 }
 
 /*

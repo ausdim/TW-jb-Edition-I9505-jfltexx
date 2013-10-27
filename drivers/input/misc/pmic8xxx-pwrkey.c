@@ -32,6 +32,16 @@
 #define PON_CNTL_PULL_UP BIT(7)
 #define PON_CNTL_TRIG_DELAY_MASK (0x7)
 
+extern void screen_is_on_relay_kt(bool state);
+extern void boostpulse_relay_kt(void);
+//extern void set_screen_on_off_mhz(bool onoff);
+static bool screen_state = true;
+
+void set_screen_on_off_flag(bool onoff)
+{
+	screen_state = onoff;
+}
+
 /**
  * struct pmic8xxx_pwrkey - pmic8xxx pwrkey information
  * @key_press_irq: key press irq number
