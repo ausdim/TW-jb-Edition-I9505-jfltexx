@@ -815,6 +815,12 @@ static int sec_chg_set_property(struct power_supply *psy,
 					charger->charging_current_max;
 
 			pr_alert("KTMAX77693-5-%d-%d",set_charging_current,set_charging_current_max);
+			if (charger->siop_level < 100 &&
+					val->intval == POWER_SUPPLY_TYPE_MAINS) {
+				set_charging_current_max = SIOP_INPUT_LIMIT_CURRENT;
+				if (set_charging_current > SIOP_CHARGING_LIMIT_CURRENT)
+					set_charging_current = SIOP_CHARGING_LIMIT_CURRENT;
+			}
 		}
 		max77693_set_charger_state(charger, charger->is_charging);
 		/* if battery full, only disable charging  */
@@ -867,6 +873,20 @@ static int sec_chg_set_property(struct power_supply *psy,
 			if (current_now > 0 &&
 					current_now < usb_charging_current)
 				current_now = usb_charging_current;
+			/* do forced set charging current */
+			if (charger->cable_type == POWER_SUPPLY_TYPE_MAINS) {
+				if (charger->siop_level < 100 )
+					set_charging_current_max =
+						SIOP_INPUT_LIMIT_CURRENT;
+				else
+					set_charging_current_max =
+						charger->charging_current_max;
+
+				if (charger->siop_level < 100 && current_now > SIOP_CHARGING_LIMIT_CURRENT)
+					current_now = SIOP_CHARGING_LIMIT_CURRENT;
+				max77693_set_input_current(charger,
+						set_charging_current_max);
+			}
 			pr_alert("KTMAX77693-2-%d",current_now);
 			max77693_set_charge_current(charger, current_now);
 		}
