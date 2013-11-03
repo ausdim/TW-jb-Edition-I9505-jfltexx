@@ -67,7 +67,6 @@ kernel/config_data.h
 scripts/recordmcount
 kernel/usr/*
 Package/*
-firmware/*
 arch/arm/include/generated/
 firmware/*.gen.S
 firmware/ssp.fw
